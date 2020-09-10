@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.models.Project;
 import com.example.demo.services.ProjectService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/demo/api/project")
+@RequestMapping("/fyp/api/project")
 public class ProjectController {
 
     @Autowired

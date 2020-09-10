@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,12 +18,13 @@ import com.example.demo.services.UserService;
 
 
 @RestController
-@RequestMapping(path="/demo")
-public class MainController {
+@RequestMapping(path="/fyp/api/user")
+public class UserController {
+
 	@Autowired
 	private UserService userService;
 
-	@PostMapping(path="user/add")
+	@PostMapping(path="/add")
 	public @ResponseBody String addUser (@RequestParam String fname,
 									     @RequestParam String lname,
 									     @RequestParam String email
@@ -33,12 +34,12 @@ public class MainController {
 		return "saved";
 	}
 	
-	@GetMapping(path="/user/all")
+	@GetMapping(path="/all")
 	public  List<User> getAllUsers() {
 		return userService.findAllUser();
 	}
 	
-	@GetMapping(value="/user/{id}")
+	@GetMapping(value="/{id}")
 	public Optional<User> getUserbyId(@PathVariable int id) {
 		return userService.findUserbyId(id);
 	}
