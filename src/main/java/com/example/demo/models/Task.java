@@ -7,7 +7,7 @@ import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Entity
 public class Task {
