@@ -20,10 +20,18 @@ public class Task {
 	private int project_id;
 	
 	private int assignee_id;
-	
+
 	private String description;
 
 	private Date deadline;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public int getProject_id() {
 		return project_id;

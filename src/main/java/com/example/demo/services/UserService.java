@@ -21,29 +21,15 @@ public class UserService {
 	}
 	
 	public List<User> findAllUser(){
-		Iterable<User> useriter =  this.userRepository.findAll();
-		List<User> userlist = new ArrayList<>();
-		useriter.forEach(user -> {
-			User singleuser = new User();
-			singleuser.setFname(user.getFname());
-			singleuser.setLname(user.getLname());
-			singleuser.setEmail(user.getEmail());
-			userlist.add(singleuser);
-		});
-		
-		return userlist;
+		return userRepository.findAll();
 	}
 	
-	public Optional<User> findUserbyId(int id) {
-		return  userRepository.findById(id);
+	public User findUserbyId(int id) {
+		return  userRepository.findById(id).orElse(null);
 	}
 	
-	public void addUser(String fname, String lname, String email) {
-		User new_user= new User();
-		new_user.setFname(fname);
-		new_user.setLname(lname);
-		new_user.setEmail(email);
-		
-		userRepository.save(new_user);
+	public User addUser(User user) {
+		User new_user= user;
+		return userRepository.save(new_user);
 	}
 }

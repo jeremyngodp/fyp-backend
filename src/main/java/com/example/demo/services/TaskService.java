@@ -21,12 +21,12 @@ public class TaskService {
         return taskRepository.findbystudentID(id);
     }
 
-    public void addTask(int project_id, int assignee_id, String description, Date deadline) {
-        Task newTask = new Task();
-        newTask.setProject_id(project_id);
-        newTask.setAssignee_id(assignee_id);
-        newTask.setDescription(description);
-        newTask.setDeadline(deadline);
+    public Task findTaskByID(int id) {
+        return taskRepository.findById(id).orElse(null);
+    }
+
+    public Task addTask(Task newTask) {
+        return taskRepository.save(newTask);
     }
 
 
