@@ -22,11 +22,16 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping("fyp/api/task")
 public class TaskController {
 
-    @Autowired
+
     private TaskService taskService;
+    private TaskModelAssembler taskAssembler;
 
     @Autowired
-    private TaskModelAssembler taskAssembler;
+    public TaskController (TaskService taskService, TaskModelAssembler taskModelAssembler){
+        super();
+        this.taskService = taskService;
+        this.taskAssembler = taskModelAssembler;
+    }
 
     @GetMapping("/student/{student_id}/all")
     public CollectionModel<EntityModel<Task>> findTaskByStudentID(@RequestParam int student_id){

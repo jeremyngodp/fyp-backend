@@ -11,4 +11,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
     @Query("SELECT p FROM Project p WHERE p.supervisor_id = ?1")
     List<Project> findBySupervisorIDEqual (int supervisor_id);
+
+    @Query("SELECT p FROM Project p WHERE p.student_id = ?1")
+    List<Project> findByStudentIDEqual(int student_id);
 }

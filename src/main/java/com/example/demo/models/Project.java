@@ -18,8 +18,18 @@ public class Project {
 	private String description;
 
 	private String name;
-	
+
+	private Integer student_id;
+
 	private Integer supervisor_id;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public String getDescription() {
 		return description;
@@ -27,6 +37,14 @@ public class Project {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Integer getStudent_id() {
+		return student_id;
+	}
+
+	public void setStudent_id(Integer student_id) {
+		this.student_id = student_id;
 	}
 
 	public int getSupervisor_id() {

@@ -29,12 +29,15 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping(path="/fyp/api/user")
 public class UserController {
 
-	@Autowired
 	private UserService userService;
-
-	@Autowired
 	private UserModelAssembler userAssembler;
 
+	@Autowired
+	public UserController (UserService userService, UserModelAssembler userModelAssembler) {
+		super();
+		this.userAssembler = userModelAssembler;
+		this.userService = userService;
+	}
 	@PostMapping(value="/add")
 	public ResponseEntity<?> addUser (@RequestParam String fname,
 									  @RequestParam String lname,

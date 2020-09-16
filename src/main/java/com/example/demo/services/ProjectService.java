@@ -21,6 +21,10 @@ public class ProjectService {
         return this.projectRepository.findBySupervisorIDEqual(id);
     }
 
+    public List<Project> findbyStudentID (int id) {
+        return this.projectRepository.findByStudentIDEqual(id);
+    }
+
     public Optional<Project> findById (int id) {
         return this.projectRepository.findById(id);
     }
