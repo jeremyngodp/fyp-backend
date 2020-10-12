@@ -33,8 +33,8 @@ public class TaskController {
         this.taskAssembler = taskModelAssembler;
     }
 
-    @GetMapping("/student/{student_id}/all")
-    public CollectionModel<EntityModel<Task>> findTaskByStudentID(@RequestParam int student_id){
+    @GetMapping("/student/{student_id}")
+    public CollectionModel<EntityModel<Task>> findTaskByStudentID(@PathVariable("student_id") int student_id){
         List<EntityModel<Task>> tasks = taskService. findTaskByStudentID(student_id).stream().map(taskAssembler::toModel)
                                         .collect(Collectors.toList());
 
@@ -42,22 +42,21 @@ public class TaskController {
     }
 
     @GetMapping("/{id}")
-    public EntityModel<Task> findTaskByID(@RequestParam int id) {
+    public EntityModel<Task> findTaskByID(@PathVariable("id") int id) {
         Task task = taskService.findTaskByID(id);
         return taskAssembler.toModel(task);
     }
 
     @PostMapping("/add")
     public ResponseEntity<?> addTask (@RequestParam int student_id,
-                                   @RequestParam int project_id,
-                                   @RequestParam String description,
-                                   @RequestParam Date deadline ) {
+                                      @RequestParam int project_id,
+                                      @RequestParam String description,
+                                      @RequestParam Date deadline,
+                                      @RequestParam Date created_date,
+                                      @RequestParam String task_type) {
 
-        Task newTask = new Task();
-        newTask.setAssignee_id(student_id);
-        newTask.setProject_id(project_id);
-        newTask.setDescription(description);
-        newTask.setDeadline(deadline);
+        Task newTask = new Task(student_id, project_id, description, deadline, task_type, created_date);
+
         EntityModel<Task> entityModel = taskAssembler.toModel(taskService.addTask(newTask));
 
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)

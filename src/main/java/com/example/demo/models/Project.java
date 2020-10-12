@@ -9,10 +9,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Project {
-	
-	@JsonIgnore
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue
 	private Integer id;
 
 	private String description;

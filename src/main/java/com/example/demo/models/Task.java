@@ -1,21 +1,15 @@
 package com.example.demo.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
+import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.sql.Date;
 
 @Entity
 public class Task {
-	
-	@JsonIgnore
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	@GeneratedValue
+	private Integer id;
 	
 	private int project_id;
 	
@@ -23,13 +17,28 @@ public class Task {
 
 	private String description;
 
+    private Date created_date;
+
 	private Date deadline;
 
-	public int getId() {
+	private String task_type;
+
+	public Task(){}
+
+	public Task(int student_id, int project_id, String description, Date deadline, String task_type, Date created_date ) {
+		this.assignee_id = student_id;
+		this.project_id = project_id;
+		this.description = description;
+		this.deadline = deadline;
+		this.task_type = task_type;
+		this.created_date = created_date;
+	}
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -64,4 +73,20 @@ public class Task {
 	public void setDeadline(Date deadline) {
 		this.deadline = deadline;
 	}
+
+    public Date getCreated_date() {
+        return created_date;
+    }
+
+    public void setCreated_date(Date created_date) {
+        this.created_date = created_date;
+    }
+
+    public String getTask_type() {
+        return task_type;
+    }
+
+    public void setTask_type(String task_type) {
+        this.task_type = task_type;
+    }
 }
