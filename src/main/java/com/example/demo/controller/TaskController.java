@@ -47,8 +47,8 @@ public class TaskController {
         return taskAssembler.toModel(task);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<?> addTask (@RequestParam int student_id,
+    @PostMapping("/add/{student_id}")
+    public ResponseEntity<?> addTask (@PathVariable("student_id") int student_id,
                                       @RequestParam int project_id,
                                       @RequestParam String description,
                                       @RequestParam Date deadline,

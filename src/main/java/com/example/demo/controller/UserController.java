@@ -41,10 +41,11 @@ public class UserController {
 	@PostMapping(value="/add")
 	public ResponseEntity<?> addUser (@RequestParam String fname,
 									  @RequestParam String lname,
-									  @RequestParam String email
+									  @RequestParam String email,
+									  @RequestParam boolean is_staff
 										) {
 
-		User newUSer = new User(fname, lname, email);
+		User newUSer = new User(fname, lname, email, is_staff);
 		EntityModel<User> entityModel = userAssembler.toModel(userService.addUser(newUSer));
 
 		return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)

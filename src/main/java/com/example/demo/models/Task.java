@@ -1,34 +1,41 @@
 package com.example.demo.models;
 
 import javax.persistence.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.sql.Date;
 
 @Entity
+@Table(name="task")
 public class Task {
 
 	@Id
 	@GeneratedValue
+	@Column(name="id")
 	private Integer id;
-	
+
+	@Column(name="project_id")
 	private int project_id;
-	
-	private int assignee_id;
 
-	private String description;
+	@Column(name="student_id")
+	private int student_id;
 
+	@Column(name="title")
+	private String title;
+
+	@Column(name="created_date")
     private Date created_date;
 
+	@Column(name="deadline")
 	private Date deadline;
 
+	@Column(name="task_type")
 	private String task_type;
 
 	public Task(){}
 
-	public Task(int student_id, int project_id, String description, Date deadline, String task_type, Date created_date ) {
-		this.assignee_id = student_id;
+	public Task(int student_id, int project_id, String title, Date deadline, String task_type, Date created_date ) {
+		this.student_id = student_id;
 		this.project_id = project_id;
-		this.description = description;
+		this.title = title;
 		this.deadline = deadline;
 		this.task_type = task_type;
 		this.created_date = created_date;
@@ -50,20 +57,20 @@ public class Task {
 		this.project_id = project_id;
 	}
 
-	public int getAssignee_id() {
-		return assignee_id;
+	public int getStudent_id() {
+		return student_id;
 	}
 
-	public void setAssignee_id(int assignee_id) {
-		this.assignee_id = assignee_id;
+	public void setStudent_id(int assignee_id) {
+		this.student_id = student_id;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public Date getDeadline() {

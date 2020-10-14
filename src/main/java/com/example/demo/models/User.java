@@ -1,36 +1,46 @@
 package com.example.demo.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@Table(name = "user")
 public class User {
 
 	@Id
 	@GeneratedValue
+	@Column(name="id")
 	private Integer id;
-	
+
+	@Column(name="fname")
 	private String fname;
-	
+
+	@Column(name="lname")
 	private String lname;
-	
+
+	@Column(name="email")
 	private String email;
 
-	private String username;
+	@Column(name="is_staff")
+	private boolean is_staff;
 
 	public User() {}
 
-	public User (String fname, String lname, String email, String username){
+	public User (String fname, String lname, String email, boolean is_staff){
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
-		this.username = username;
+		this.is_staff = is_staff;
 	}
-	
+
+	public boolean isIs_staff() {
+		return is_staff;
+	}
+
+	public void setIs_staff(boolean is_staff) {
+		this.is_staff = is_staff;
+	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -63,11 +73,4 @@ public class User {
 		this.fname = fname;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
 }
