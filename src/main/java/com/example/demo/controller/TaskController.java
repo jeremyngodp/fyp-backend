@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import com.example.demo.assemblers.TaskModelAssembler;
 import com.example.demo.models.Task;
 import com.example.demo.services.TaskService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -12,12 +14,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("fyp/api/task")
 public class TaskController {
@@ -47,17 +50,31 @@ public class TaskController {
         return taskAssembler.toModel(task);
     }
 
-    @PostMapping("/add/{student_id}")
-    public ResponseEntity<?> addTask (@PathVariable("student_id") int student_id,
-                                      @RequestParam int project_id,
-                                      @RequestParam String description,
-                                      @RequestParam Date deadline,
-                                      @RequestParam Date created_date,
-                                      @RequestParam String task_type) {
+//    @PostMapping("/add")
+//    public ResponseEntity<?> addTask (@RequestParam int student_id,
+//                                      @RequestParam int project_id,
+//                                      @RequestParam String title,
+//                                      @RequestParam Date deadline,
+//                                      @RequestParam Date created_date,
+//                                      @RequestParam String task_type) {
+//
+//        Task newTask = new Task(student_id, project_id, title, deadline, task_type, created_date);
+//
+//        EntityModel<Task> entityModel = taskAssembler.toModel(taskService.addTask(newTask));
+//
+//        return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
+//                .toUri())
+//                .body(entityModel);
+//    }
 
-        Task newTask = new Task(student_id, project_id, description, deadline, task_type, created_date);
+    @PostMapping(value = "/add", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<EntityModel<Task>> addTask (@RequestBody Task requestBodyTask) throws JsonProcessingException {
+//        ObjectMapper mapper = new ObjectMapper();
+//
 
-        EntityModel<Task> entityModel = taskAssembler.toModel(taskService.addTask(newTask));
+//        System.out.println("success");
+
+        EntityModel<Task> entityModel = taskAssembler.toModel(taskService.addTask(requestBodyTask));
 
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
                 .toUri())

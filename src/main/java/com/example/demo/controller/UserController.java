@@ -11,12 +11,7 @@ import org.springframework.hateoas.EntityModel;
 
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.models.User;
 import com.example.demo.services.UserService;
@@ -24,7 +19,7 @@ import com.example.demo.services.UserService;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-
+@CrossOrigin(origins ="http://localhost:3000")
 @RestController
 @RequestMapping(path="/fyp/api/user")
 public class UserController {
@@ -61,9 +56,9 @@ public class UserController {
 		return CollectionModel.of(users, linkTo(methodOn(UserController.class).getAllUsers()).withSelfRel());
 	}
 	
-	@GetMapping(value="/{id}")
-	public EntityModel<User> getUserbyId(@PathVariable int id) {
-		User user = userService.findUserbyId(id);
+	@GetMapping(value="/{email}")
+	public EntityModel<User> getUserByEmail(@PathVariable String email) {
+		User user = userService.findUserByEmail(email);
 
 		return userAssembler.toModel(user);
 	}
