@@ -8,7 +8,7 @@ import java.sql.Date;
 public class Task {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
 	private Integer id;
 
@@ -61,7 +61,7 @@ public class Task {
 		return student_id;
 	}
 
-	public void setStudent_id(int assignee_id) {
+	public void setStudent_id(int student_id) {
 		this.student_id = student_id;
 	}
 

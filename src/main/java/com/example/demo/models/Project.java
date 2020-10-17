@@ -1,25 +1,28 @@
 package com.example.demo.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@Table(name = "project")
 public class Project {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id")
 	private Integer id;
 
+	@Column(name = "description")
 	private String description;
 
+	@Column(name ="name")
 	private String name;
 
+	@Column(name = "student_id")
 	private Integer student_id;
 
+	@Column(name = "supervisor_id")
 	private Integer supervisor_id;
 
 	public Integer getId() {
