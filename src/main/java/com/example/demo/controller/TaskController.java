@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -38,7 +37,9 @@ public class TaskController {
 
     @GetMapping("/student/{student_id}")
     public CollectionModel<EntityModel<Task>> findTaskByStudentID(@PathVariable("student_id") int student_id){
-        List<EntityModel<Task>> tasks = taskService. findTaskByStudentID(student_id).stream().map(taskAssembler::toModel)
+        List<EntityModel<Task>> tasks = taskService.findTaskByStudentID(student_id)
+                                        .stream()
+                                        .map(taskAssembler::toModel)
                                         .collect(Collectors.toList());
 
         return CollectionModel.of(tasks, linkTo(methodOn(TaskController.class).findTaskByStudentID(student_id)).withSelfRel());
@@ -50,6 +51,7 @@ public class TaskController {
         return taskAssembler.toModel(task);
     }
 
+//    This allow new task to be added through content-type = 'application/x-form-www-urlencoded"
 //    @PostMapping("/add")
 //    public ResponseEntity<?> addTask (@RequestParam int student_id,
 //                                      @RequestParam int project_id,
@@ -67,12 +69,9 @@ public class TaskController {
 //                .body(entityModel);
 //    }
 
+    // This allow new task to be added via POST request with JSON body data.
     @PostMapping(value = "/add", consumes = "application/json", produces = "application/json")
     public ResponseEntity<EntityModel<Task>> addTask (@RequestBody Task requestBodyTask) throws JsonProcessingException {
-//        ObjectMapper mapper = new ObjectMapper();
-//
-
-//        System.out.println("success");
 
         EntityModel<Task> entityModel = taskAssembler.toModel(taskService.addTask(requestBodyTask));
 

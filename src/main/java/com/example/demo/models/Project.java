@@ -2,8 +2,6 @@ package com.example.demo.models;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @Table(name = "project")
 public class Project {

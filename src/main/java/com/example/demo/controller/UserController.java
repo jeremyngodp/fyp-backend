@@ -50,7 +50,9 @@ public class UserController {
 	
 	@GetMapping(value="/all")
 	public CollectionModel<EntityModel<User>> getAllUsers() {
-		List<EntityModel<User>> users = userService.findAllUser().stream().map(userAssembler::toModel)
+		List<EntityModel<User>> users = userService.findAllUser()
+										.stream()
+										.map(userAssembler::toModel)
 										.collect(Collectors.toList());
 
 		return CollectionModel.of(users, linkTo(methodOn(UserController.class).getAllUsers()).withSelfRel());
