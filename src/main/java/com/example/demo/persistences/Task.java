@@ -1,7 +1,11 @@
-package com.example.demo.models;
+package com.example.demo.persistences;
+
+import com.example.demo.dto.CommentDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Table(name="task")
@@ -29,6 +33,13 @@ public class Task {
 
 	@Column(name="task_type")
 	private String task_type;
+
+	@Transient
+	private List<CommentDTO> commentsDTO;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "task")
+	private List<Comment> comments;
 
 	public Task(){}
 
@@ -96,4 +107,20 @@ public class Task {
     public void setTask_type(String task_type) {
         this.task_type = task_type;
     }
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public List<CommentDTO> getCommentsDTO() {
+		return commentsDTO;
+	}
+
+	public void setCommentsDTO(List<CommentDTO> commentsDTO) {
+		this.commentsDTO = commentsDTO;
+	}
 }

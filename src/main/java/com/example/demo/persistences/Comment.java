@@ -1,4 +1,4 @@
-package com.example.demo.models;
+package com.example.demo.persistences;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,24 +9,31 @@ public class Comment {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="id")
-    int id;
+    private int id;
 
-    @Column(name = "task_id")
-    int task_id;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name="task_id", nullable = false)
+    private Task task;
 
     @Column(name = "user_id")
-    int user_id;
+    private int user_id;
 
     @Column(name ="content")
-    String content;
+    private String content;
 
     @Column(name= "created_date")
-    Date created_date;
+    private Date created_date;
 
     public Comment() {}
 
-    public Comment (int task_id, int user_id, String content, Date created_date) {
-        this.task_id = task_id;
+    public Comment(Task task, int user_id, String content, Date created_date) {
+        this.task = task;
+        this.user_id = user_id;
+        this.content = content;
+        this.created_date = created_date;
+    }
+
+    public Comment (int user_id, String content, Date created_date) {
         this. user_id = user_id;
         this.content = content;
         this.created_date = created_date;
@@ -40,12 +47,12 @@ public class Comment {
         this.id = id;
     }
 
-    public int getTask_id() {
-        return task_id;
+    public Task getTask() {
+        return task;
     }
 
-    public void setTask_id(int task_id) {
-        this.task_id = task_id;
+    public void setTask(Task task) {
+        this.task = task;
     }
 
     public int getUser_id() {
