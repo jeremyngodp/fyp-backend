@@ -13,7 +13,7 @@ import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.models.User;
+import com.example.demo.persistences.User;
 import com.example.demo.services.UserService;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;

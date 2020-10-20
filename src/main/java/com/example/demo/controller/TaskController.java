@@ -1,10 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.assemblers.TaskModelAssembler;
-import com.example.demo.models.Task;
+import com.example.demo.persistences.Task;
+import com.example.demo.services.CommentService;
 import com.example.demo.services.TaskService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -12,7 +12,6 @@ import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +23,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping("fyp/api/task")
 public class TaskController {
 
-
+    private CommentService commentService;
     private TaskService taskService;
     private TaskModelAssembler taskAssembler;
 
@@ -42,12 +41,15 @@ public class TaskController {
                                         .map(taskAssembler::toModel)
                                         .collect(Collectors.toList());
 
-        return CollectionModel.of(tasks, linkTo(methodOn(TaskController.class).findTaskByStudentID(student_id)).withSelfRel());
+        return CollectionModel.of(tasks, linkTo(methodOn(TaskController.class)
+                                         .findTaskByStudentID(student_id))
+                                         .withSelfRel());
     }
 
     @GetMapping("/{id}")
     public EntityModel<Task> findTaskByID(@PathVariable("id") int id) {
         Task task = taskService.findTaskByID(id);
+
         return taskAssembler.toModel(task);
     }
 
@@ -71,7 +73,7 @@ public class TaskController {
 
     // This allow new task to be added via POST request with JSON body data.
     @PostMapping(value = "/add", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<EntityModel<Task>> addTask (@RequestBody Task requestBodyTask) throws JsonProcessingException {
+    public ResponseEntity<EntityModel<Task>> addTask (@RequestBody Task requestBodyTask)  {
 
         EntityModel<Task> entityModel = taskAssembler.toModel(taskService.addTask(requestBodyTask));
 

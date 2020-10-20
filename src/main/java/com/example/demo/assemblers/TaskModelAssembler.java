@@ -1,7 +1,7 @@
 package com.example.demo.assemblers;
 
 import com.example.demo.controller.TaskController;
-import com.example.demo.models.Task;
+import com.example.demo.persistences.Task;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,11 @@ public class TaskModelAssembler implements RepresentationModelAssembler<Task, En
 
     @Override
     public EntityModel<Task> toModel(Task task){
-        return EntityModel.of(task, linkTo(methodOn(TaskController.class).findTaskByID(task.getId())).withSelfRel(),
-                linkTo(methodOn(TaskController.class).findTaskByStudentID(task.getStudent_id())).withRel("byStudentID"));
+        return EntityModel.of(task, linkTo(methodOn(TaskController.class)
+                                    .findTaskByID(task.getId()))
+                                    .withSelfRel(),
+                                    linkTo(methodOn(TaskController.class)
+                                    .findTaskByStudentID(task.getStudent_id()))
+                                    .withRel("byStudentID"));
     }
 }

@@ -2,7 +2,7 @@ package com.example.demo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.demo.models.Task;
+import com.example.demo.persistences.Task;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;

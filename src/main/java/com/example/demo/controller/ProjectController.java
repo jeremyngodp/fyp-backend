@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.assemblers.ProjectModelAssembler;
-import com.example.demo.models.Project;
+import com.example.demo.persistences.Project;
 import com.example.demo.services.ProjectService;
 
 import org.springframework.beans.factory.annotation.Autowired;
