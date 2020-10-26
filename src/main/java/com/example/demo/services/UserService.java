@@ -25,6 +25,10 @@ public class UserService {
 	public User findUserByEmail(String email) {
 		return  userRepository.findByEmail(email);
 	}
+
+	public User findUserById(int id) {
+		return userRepository.findById(id);
+	}
 	
 	public User addUser(User user) {
 		User new_user= user;
