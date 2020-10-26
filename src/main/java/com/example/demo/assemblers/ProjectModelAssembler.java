@@ -15,13 +15,13 @@ public class ProjectModelAssembler implements RepresentationModelAssembler<Proje
     @Override
     public EntityModel<Project> toModel(Project project){
         return EntityModel.of(project, linkTo(methodOn(ProjectController.class)
-                                                .findbyID(project.getId()))
+                                                .findByID(project.getId()))
                                                 .withSelfRel(),
                                         linkTo(methodOn(ProjectController.class)
-                                                .findbyStudentID(project.getStudent_id()))
+                                                .findByStudentID(project.getStudent_id()))
                                                 .withRel("byStudentID"),
                                         linkTo(methodOn(ProjectController.class)
-                                                .findAllbySupervisorID(project.getSupervisor_id()))
+                                                .findAllBySupervisorID(project.getSupervisor_id()))
                                                 .withRel("bySupervisorID"));
     }
 }
