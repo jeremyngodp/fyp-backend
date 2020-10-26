@@ -65,7 +65,7 @@ public class CommentController {
 
         Task task = this.taskService.findTaskByID(task_id);
         newComment.setTask(task);
-        EntityModel<Comment> entityModel = commentAssembler.toModel(commentService.addComment(newComment));
+        EntityModel<Comment> entityModel = commentAssembler.toModel(commentService.addCommentReturnPersistence(newComment));
 
         return ResponseEntity.created(entityModel.getRequiredLink("byTaskID").toUri())
                 .body(entityModel);
@@ -73,18 +73,31 @@ public class CommentController {
 
     // This method use a DTO to send and receive data
     @PostMapping(value = "/add")
-    public ResponseEntity<EntityModel<CommentDTO>> addCommentbyDTO ( @RequestBody CommentDTO newCommentdto) {
+    public ResponseEntity<EntityModel<CommentDTO>> addCommentByDTO ( @RequestBody CommentDTO newCommentdto) {
+
+        /*
+         The Comment DTO does not have 'task' property and only task_id
+         so need to find the corresponding task.
+        */
         Task task = this.taskService.findTaskByID((newCommentdto.getTask_id()));
 
+        /*
+         To actually add the new Comment to the database, a Comment object must be used, not a DTO
+         so a comment object is created from the properties extracted from the DTO.
+        */
         Comment newComment = new Comment( task,
                                           newCommentdto.getUser_id(),
                                           newCommentdto.getContent(),
                                           newCommentdto.getCreated_date());
 
-        int newCommentID =  commentService.addComment(newComment).getId();
+        /*
+         This method take in a Comment, add it to the database with the JpaRepository.save() method,
+         then create a new CommentDTO from the newly added Comment and return.
+        */
+        CommentDTO addedCommentDTO =  commentService.addCommentReturnDTO(newComment);
 
-        newCommentdto.setId(newCommentID);
-        EntityModel<CommentDTO> entityModel =  commentDTOAssembler.toModel(newCommentdto);
+        /* Then the DTO is placed in the body of the response. */
+        EntityModel<CommentDTO> entityModel =  commentDTOAssembler.toModel(addedCommentDTO);
         return ResponseEntity.created(entityModel.getRequiredLink("byTaskID").toUri())
                 .body(entityModel);
     }

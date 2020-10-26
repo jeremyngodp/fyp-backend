@@ -10,9 +10,44 @@ public class CommentDTO {
 
     private int user_id;
 
+    private String user_email;
+
     private String content;
 
     private Date created_date;
+
+    public CommentDTO() {}
+
+    public CommentDTO(int task_id, int user_id, String user_email, String content, Date created_date) {
+        this.task_id = task_id;
+        this.user_email = user_email;
+        this.user_id = user_id;
+        this.content = content;
+        this.created_date = created_date;
+    }
+
+    public CommentDTO(int task_id, int user_id, String content, Date created_date) {
+        this.task_id = task_id;
+        this.user_id = user_id;
+        this.content = content;
+        this.created_date = created_date;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Date getCreated_date() {
+        return created_date;
+    }
+
+    public void setCreated_date(Date created_date) {
+        this.created_date = created_date;
+    }
 
     public int getId() {
         return id;
@@ -38,28 +73,11 @@ public class CommentDTO {
         this.user_id = user_id;
     }
 
-    public CommentDTO() {}
-
-    public CommentDTO(int task_id, int user_id, String content, Date created_date) {
-        this.task_id = task_id;
-        this.user_id = user_id;
-        this.content = content;
-        this.created_date = created_date;
+    public String getUser_email() {
+        return user_email;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Date getCreated_date() {
-        return created_date;
-    }
-
-    public void setCreated_date(Date created_date) {
-        this.created_date = created_date;
+    public void setUser_email(String user_email) {
+        this.user_email = user_email;
     }
 }
