@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.assemblers.TaskModelAssembler;
+import com.example.demo.persistences.Project;
 import com.example.demo.persistences.Task;
+import com.example.demo.repository.ProjectRepository;
 import com.example.demo.services.CommentService;
 import com.example.demo.services.TaskService;
 
@@ -23,15 +25,16 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping("fyp/api/task")
 public class TaskController {
 
-    private CommentService commentService;
-    private TaskService taskService;
-    private TaskModelAssembler taskAssembler;
+    private final TaskService taskService;
+    private final TaskModelAssembler taskAssembler;
+    private final ProjectRepository projectRepository;
 
     @Autowired
-    public TaskController (TaskService taskService, TaskModelAssembler taskModelAssembler){
+    public TaskController (TaskService taskService, TaskModelAssembler taskModelAssembler, ProjectRepository projectRepository){
         super();
         this.taskService = taskService;
         this.taskAssembler = taskModelAssembler;
+        this.projectRepository = projectRepository;
     }
 
     @GetMapping("/student/{student_id}")
@@ -87,7 +90,8 @@ public class TaskController {
     // This allow new task to be added via POST request with JSON body data.
     @PostMapping(value = "/add", consumes = "application/json", produces = "application/json")
     public ResponseEntity<EntityModel<Task>> addTask (@RequestBody Task requestBodyTask)  {
-
+        Project project = projectRepository.findById(requestBodyTask.getProject_id()).orElse(null);
+        requestBodyTask.setProject(project);
         EntityModel<Task> entityModel = taskAssembler.toModel(taskService.addTask(requestBodyTask));
 
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)

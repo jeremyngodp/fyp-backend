@@ -5,14 +5,17 @@ import com.example.demo.persistences.Project;
 import com.example.demo.services.ProjectService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/fyp/api/project")
 public class ProjectController {
@@ -28,17 +31,32 @@ public class ProjectController {
     }
 
     @GetMapping (path = "/bysup/{sup_id}")
-    public List<Project> findAllbySupervisorID(@RequestParam int sup_id){
-        return projectService.findBySupervisorID(sup_id);
+    public CollectionModel<EntityModel<Project>> findAllBySupervisorID(@PathVariable("sup_id") int sup_id){
+        List<EntityModel<Project>> projectList =  projectService.findBySupervisorID(sup_id)
+                                                                .stream()
+                                                                .map(projectAssembler::toModel)
+                                                                .collect(Collectors.toList());
+
+        return CollectionModel.of(projectList, linkTo(methodOn(ProjectController.class)
+                              .findAllBySupervisorID(sup_id))
+                              .withSelfRel());
+
     }
 
     @GetMapping (path = "/bystu/{stu_id}")
-    public List<Project> findbyStudentID(@RequestParam int stu_id){
-        return projectService.findbyStudentID(stu_id);
+    public CollectionModel<EntityModel<Project>> findByStudentID(@PathVariable ("stu_id") int stu_id){
+        List<EntityModel<Project>> projectList = projectService.findbyStudentID(stu_id)
+                                                                .stream()
+                                                                .map(projectAssembler::toModel)
+                                                                .collect(Collectors.toList());
+
+        return CollectionModel.of(projectList,linkTo(methodOn(ProjectController.class)
+                              .findByStudentID(stu_id))
+                              .withSelfRel());
     }
 
     @GetMapping (path = "/{id}")
-    public Optional<Project> findbyID(@RequestParam int id){
-        return projectService.findById(id);
+    public EntityModel<Project> findByID(@PathVariable("id") int id){
+        return projectAssembler.toModel(projectService.findById(id));
     }
 }

@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("fyp/api/comment")
 public class CommentController {
@@ -72,7 +73,7 @@ public class CommentController {
     }
 
     // This method use a DTO to send and receive data
-    @PostMapping(value = "/add")
+    @PostMapping(value = "/addByDto")
     public ResponseEntity<EntityModel<CommentDTO>> addCommentByDTO ( @RequestBody CommentDTO newCommentdto) {
 
         /*
@@ -98,6 +99,21 @@ public class CommentController {
 
         /* Then the DTO is placed in the body of the response. */
         EntityModel<CommentDTO> entityModel =  commentDTOAssembler.toModel(addedCommentDTO);
+        return ResponseEntity.created(entityModel.getRequiredLink("byTaskID").toUri())
+                .body(entityModel);
+    }
+
+    //This method will assign incoming data into a Comment entity directly
+    @PostMapping(value = "/addByComment")
+    public ResponseEntity<EntityModel<Comment>> addComment ( @RequestBody Comment newComment) {
+
+        Task task = this.taskService.findTaskByID((newComment.getTask_id()));
+
+        newComment.setTask(task);
+
+        Comment addedComment =  commentService.addCommentReturnPersistence(newComment);
+
+        EntityModel<Comment> entityModel =  commentAssembler.toModel(addedComment);
         return ResponseEntity.created(entityModel.getRequiredLink("byTaskID").toUri())
                 .body(entityModel);
     }
