@@ -16,7 +16,12 @@ public class Task {
 	@Column(name="id")
 	private Integer id;
 
-	@Column(name="project_id")
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name="project_id", nullable = false)
+	private Project project;
+
+	@Transient
 	private int project_id;
 
 	@Column(name="student_id")
@@ -34,18 +39,18 @@ public class Task {
 	@Column(name="task_type")
 	private String task_type;
 
+	@JsonIgnore
 	@Transient
 	private List<CommentDTO> commentsDTO;
 
-	@JsonIgnore
 	@OneToMany(mappedBy = "task")
 	private List<Comment> comments;
 
 	public Task(){}
 
-	public Task(int student_id, int project_id, String title, Date deadline, String task_type, Date created_date ) {
+	public Task(int student_id, Project project, String title, Date deadline, String task_type, Date created_date ) {
 		this.student_id = student_id;
-		this.project_id = project_id;
+		this.project = project;
 		this.title = title;
 		this.deadline = deadline;
 		this.task_type = task_type;
@@ -58,6 +63,14 @@ public class Task {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
 	}
 
 	public int getProject_id() {

@@ -1,6 +1,9 @@
 package com.example.demo.persistences;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "project")
@@ -22,6 +25,10 @@ public class Project {
 
 	@Column(name = "supervisor_id")
 	private Integer supervisor_id;
+
+//	@JsonIgnore
+	@OneToMany(mappedBy = "project")
+	private List<Task> taskList;
 
 	public Integer getId() {
 		return id;
@@ -61,5 +68,13 @@ public class Project {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public List<Task> getTaskList() {
+		return taskList;
+	}
+
+	public void setTaskList(List<Task> taskList) {
+		this.taskList = taskList;
 	}
 }
