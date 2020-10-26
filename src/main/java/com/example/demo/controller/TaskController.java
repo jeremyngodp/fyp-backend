@@ -53,6 +53,19 @@ public class TaskController {
         return taskAssembler.toModel(task);
     }
 
+    //This endpoint is for StaffPage.jsx to look for all tasks belong to a particular project.
+    @GetMapping("/project/{project_id}")
+    public CollectionModel<EntityModel<Task>> findTaskByProjectId (@PathVariable("project_id") int project_id) {
+        List<EntityModel<Task>> tasks = taskService.findTaskByProjectID(project_id)
+                                        .stream()
+                                        .map(taskAssembler::toModel)
+                                        .collect(Collectors.toList());
+
+        return CollectionModel.of(tasks, linkTo(methodOn(TaskController.class)
+                .findTaskByProjectId(project_id))
+                .withSelfRel());
+    }
+
 //    This allow new task to be added through content-type = 'application/x-form-www-urlencoded"
 //    @PostMapping("/add")
 //    public ResponseEntity<?> addTask (@RequestParam int student_id,

@@ -47,6 +47,15 @@ public class TaskService {
         return result;
     }
 
+    public List<Task> findTaskByProjectID(int id) {
+        List<Task> taskList =  taskRepository.findByProjectId(id);
+        taskList.stream()
+                .map(this::addCommentToTask)
+                .collect(Collectors.toList());
+
+        return taskList;
+    }
+
     public Task addTask(Task newTask) {
         return this.taskRepository.save(newTask);
     }

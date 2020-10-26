@@ -19,6 +19,10 @@ public class TaskModelAssembler implements RepresentationModelAssembler<Task, En
                                     .withSelfRel(),
                                     linkTo(methodOn(TaskController.class)
                                     .findTaskByStudentID(task.getStudent_id()))
-                                    .withRel("byStudentID"));
+                                    .withRel("byStudentID"),
+                                    linkTo(methodOn(TaskController.class)
+                                    .findTaskByProjectId(task.getProject_id()))
+                                    .withRel("byProjectID")
+                             );
     }
 }
