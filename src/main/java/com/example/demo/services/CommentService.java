@@ -41,6 +41,7 @@ public class CommentService {
 
         return commentDTO;
     }
+
     public List<CommentDTO> toDTOList (List<Comment> commentList) {
         List<CommentDTO> commentDTOList = commentList.stream().map(this::toindivDTO).collect(Collectors.toList());
 
@@ -54,6 +55,12 @@ public class CommentService {
     }
 
     public Comment addCommentReturnPersistence(Comment newComment){
-        return this.commentRepository.save(newComment);
+        Comment result =  this.commentRepository.save(newComment);
+
+        result.setUser_email(userRepository.findById(newComment.getUser_id())
+                                           .getEmail());
+
+        return result;
     }
+
 }
