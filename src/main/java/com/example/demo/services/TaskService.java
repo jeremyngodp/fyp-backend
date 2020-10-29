@@ -32,10 +32,11 @@ public class TaskService {
     private Task addCommentToTask (Task task) {
         List<Comment> commentSet = commentRepository.findByTask(task)
                                                     .stream()
-                                                    .peek(comment -> {
+                                                    .map(comment -> {
                                                         comment.setTask_id(task.getId());
                                                         comment.setUser_email(userRepository.findById(comment.getUser_id())
                                                                                             .getEmail());
+                                                        return comment;
                                                     })
                                                     .collect(Collectors.toList());
 

@@ -20,10 +20,20 @@ public class Project {
 	@Column(name ="name")
 	private String name;
 
+	// So far only one student per project since it's FYP.
+	@Transient
+	private User student;
+
+	@JsonIgnore
 	@Column(name = "student_id")
 	private Integer student_id;
 
-	@Column(name = "supervisor_id")
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "supervisor_id", nullable = false)
+	private User supervisor;
+
+	@Transient
 	private Integer supervisor_id;
 
 //	@JsonIgnore
@@ -76,5 +86,25 @@ public class Project {
 
 	public void setTaskList(List<Task> taskList) {
 		this.taskList = taskList;
+	}
+
+	public User getStudent() {
+		return student;
+	}
+
+	public void setStudent(User student) {
+		this.student = student;
+	}
+
+	public User getSupervisor() {
+		return supervisor;
+	}
+
+	public void setSupervisor(User supervisor) {
+		this.supervisor = supervisor;
+	}
+
+	public void setSupervisor_id(Integer supervisor_id) {
+		this.supervisor_id = supervisor_id;
 	}
 }

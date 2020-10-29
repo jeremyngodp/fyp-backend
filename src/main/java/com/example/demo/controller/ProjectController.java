@@ -20,8 +20,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping("/fyp/api/project")
 public class ProjectController {
 
-    private ProjectService projectService;
-    private ProjectModelAssembler projectAssembler;
+    private final ProjectService projectService;
+    private final ProjectModelAssembler projectAssembler;
 
     @Autowired
     public ProjectController(ProjectService projectService, ProjectModelAssembler projectModelAssembler) {
