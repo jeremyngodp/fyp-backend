@@ -21,7 +21,7 @@ public class ProjectModelAssembler implements RepresentationModelAssembler<Proje
                                                 .findByStudentID(project.getStudent_id()))
                                                 .withRel("byStudentID"),
                                         linkTo(methodOn(ProjectController.class)
-                                                .findAllBySupervisorID(project.getSupervisor_id()))
+                                                .findAllBySupervisorID(project.getSupervisor().getId()))
                                                 .withRel("bySupervisorID"));
     }
 }

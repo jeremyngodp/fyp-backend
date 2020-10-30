@@ -28,17 +28,29 @@ public class Project {
 	@Column(name = "student_id")
 	private Integer student_id;
 
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+//	@JsonIgnore
+	@ManyToOne( optional = false)
 	@JoinColumn(name = "supervisor_id", nullable = false)
 	private User supervisor;
 
-	@Transient
-	private Integer supervisor_id;
+//	@JsonIgnore
+//	@Transient
+//	private Integer supervisor_id;
 
 //	@JsonIgnore
 	@OneToMany(mappedBy = "project")
 	private List<Task> taskList;
+
+	public Project() {
+	}
+
+	public Project(Integer id, String name, User student, User supervisor, String description) {
+		this.id = id;
+		this.name = name;
+		this.student = student;
+		this.supervisor = supervisor;
+		this.description = description;
+	}
 
 	public Integer getId() {
 		return id;
@@ -64,13 +76,9 @@ public class Project {
 		this.student_id = student_id;
 	}
 
-	public int getSupervisor_id() {
-		return supervisor_id;
-	}
-
-	public void setSupervisor_id(int supervisor_id) {
-		this.supervisor_id = supervisor_id;
-	}
+//	public int getSupervisor_id() {
+//		return supervisor_id;
+//	}
 
 	public String getName() {
 		return name;
@@ -104,7 +112,7 @@ public class Project {
 		this.supervisor = supervisor;
 	}
 
-	public void setSupervisor_id(Integer supervisor_id) {
-		this.supervisor_id = supervisor_id;
-	}
+//	public void setSupervisor_id(Integer supervisor_id) {
+//		this.supervisor_id = supervisor_id;
+//	}
 }

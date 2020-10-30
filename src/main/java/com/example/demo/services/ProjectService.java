@@ -30,7 +30,7 @@ public class ProjectService {
                                                     .stream()
                                                     .map(project -> {
                                                         project = this.addTaskList(project);
-                                                        //project = this.addStudentEntity(project);
+                                                        project = this.addStudentEntity(project);
                                                         return project;
                                                     })
                                                     .collect(Collectors.toList());
@@ -42,7 +42,7 @@ public class ProjectService {
                                                      .stream()
                                                      .map(project -> {
                                                          project = this.addTaskList(project);
-                                                         //project = this.addStudentEntity(project);
+                                                         project = this.addStudentEntity(project);
                                                          return project;
                                                      })
                                                      .collect(Collectors.toList());
@@ -53,8 +53,8 @@ public class ProjectService {
     public Project findById (int id) {
         Project result = this.projectRepository.findById(id).orElse(null);
 
-        result =  this.addTaskList(result);
-        //result =  this.addStudentEntity(result);
+        result = this.addTaskList(result);
+        result = this.addStudentEntity(result);
 
         return result;
     }
@@ -77,6 +77,8 @@ public class ProjectService {
                                                                         })
                                                         .collect(Collectors.toList());
 
+                                                    task.setProject_id(project_id);
+
                                                     return task;
                                             })
                                            .collect(Collectors.toList());
@@ -87,7 +89,7 @@ public class ProjectService {
     }
 
     private Project addStudentEntity(Project project) {
-        int student_id  =  project.getStudent_id();
+        int student_id = project.getStudent_id();
         User student = userRepository.findById(student_id);
         project.setStudent(student);
 
