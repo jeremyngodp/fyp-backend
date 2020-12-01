@@ -1,4 +1,4 @@
-package com.example.demo.security;
+package com.example.demo.jwt;
 
 import com.example.demo.persistences.User;
 import org.springframework.security.core.GrantedAuthority;
