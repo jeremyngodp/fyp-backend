@@ -43,8 +43,8 @@ public class UserService implements UserDetailsService {
 		return userRepository.findAll();
 	}
 
-	public User findUserByEmail(String email) {
-		return userRepository.findByEmail(email);
+	public User findUserByUsername(String username) {
+		return userRepository.findByUsername(username);
 	}
 }
 

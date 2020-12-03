@@ -76,8 +76,9 @@ public class UserController {
 				.loadUserByUsername(authenticationRequest.getUsername());
 
 		final String token = jwtTokenUtil.generateToken(userDetails);
+		User user = userService.findUserByUsername(authenticationRequest.getUsername());
 
-		return ResponseEntity.ok(new JwtResponse(token));
+		return ResponseEntity.ok(new JwtResponse(token, user));
 	}
 
     private void authenticate(String username, String password) throws Exception {
@@ -100,9 +101,9 @@ public class UserController {
 		return CollectionModel.of(users, linkTo(methodOn(UserController.class).getAllUsers()).withSelfRel());
 	}
 
-	@GetMapping(value="/{email}")
-	public EntityModel<User> getUserByEmail(@PathVariable String email) {
-		User user = userService.findUserByEmail(email);
+	@GetMapping(value="/{username}")
+	public EntityModel<User> getUserByUsername(@PathVariable String username) {
+		User user = userService.findUserByUsername(username);
 
 		return userAssembler.toModel(user);
 	}
