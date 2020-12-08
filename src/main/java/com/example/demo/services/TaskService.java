@@ -10,6 +10,9 @@ import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,17 +47,17 @@ public class TaskService {
         return task;
     }
 
-    public List<Task> findTaskByStudentID (int id){
+    public List<Task> findTaskByStudentID (int id) throws EntityNotFoundException {
 
         List<Task> taskList =  taskRepository.findbystudentID(id);
-        return taskList.stream()
-                            .map(task -> {
-                                task.setProject_id(id);
-                                task = this.addCommentToTask(task);
-                                return task;
-                            })
-                            .collect(Collectors.toList());
 
+            return taskList.stream()
+                    .map(task -> {
+                        task.setProject_id(id);
+                        task = this.addCommentToTask(task);
+                        return task;
+                    })
+                    .collect(Collectors.toList());
 
     }
 
