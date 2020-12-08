@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,8 +10,10 @@ import com.example.demo.jwt.JwtRequest;
 import com.example.demo.jwt.JwtResponse;
 import com.example.demo.jwt.JwtTokenUtil;
 import com.example.demo.jwt.UserService;
+import com.example.demo.persistences.Project;
 import com.example.demo.persistences.User;
 
+import com.example.demo.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.hateoas.CollectionModel;
@@ -39,9 +42,11 @@ public class UserController {
 	private final UserModelAssembler userAssembler;
 	private final AuthenticationManager authenticationManager;
 	private final JwtTokenUtil jwtTokenUtil;
+	private final ProjectService projectService;
 
 	@Autowired
 	public UserController (UserService userService,
+						   ProjectService projectService,
 						   UserModelAssembler userModelAssembler,
 						   AuthenticationManager authenticationManager,
 						   JwtTokenUtil jwtTokenUtil) {
@@ -50,6 +55,7 @@ public class UserController {
 		this.userService = userService;
 		this.authenticationManager = authenticationManager;
 		this.jwtTokenUtil = jwtTokenUtil;
+		this.projectService= projectService;
 	}
     @PostMapping(value = "/add", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<?> addUser (@RequestBody UserDTO userdto) {
@@ -77,8 +83,14 @@ public class UserController {
 
 		final String token = jwtTokenUtil.generateToken(userDetails);
 		User user = userService.findUserByUsername(authenticationRequest.getUsername());
-
-		return ResponseEntity.ok(new JwtResponse(token, user));
+		List<Project> projects = new ArrayList<>();
+		if(user.isIs_staff()) {
+			projects = projectService.findBySupervisorID(user.getId());
+		}
+		else if (!user.isIs_staff()) {
+			projects = projectService.findbyStudentID(user.getId());
+		}
+		return ResponseEntity.ok(new JwtResponse(token, user, projects));
 	}
 
     private void authenticate(String username, String password) throws Exception {
