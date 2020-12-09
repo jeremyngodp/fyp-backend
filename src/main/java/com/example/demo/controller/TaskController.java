@@ -11,9 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,7 +66,12 @@ public class TaskController {
                                         .stream()
                                         .map(taskAssembler::toModel)
                                         .collect(Collectors.toList());
-
+        if (tasks.size() == 0) {
+            List<EntityModel<Task>> taskList = Collections.emptyList();
+            return CollectionModel.of(taskList, linkTo(methodOn(TaskController.class)
+                    .findTaskByProjectId(project_id))
+                    .withSelfRel());
+        }
         return CollectionModel.of(tasks, linkTo(methodOn(TaskController.class)
                 .findTaskByProjectId(project_id))
                 .withSelfRel());

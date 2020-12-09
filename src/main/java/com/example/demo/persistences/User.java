@@ -1,5 +1,7 @@
 package com.example.demo.persistences;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -16,6 +18,13 @@ public class User {
 
 	@Column(name="lname")
 	private String lname;
+
+	@Column(name="username")
+	private String username;
+
+	@JsonIgnore
+	@Column(name="password")
+	private String password;
 
 	@Column(name="email")
 	private String email;
@@ -70,6 +79,22 @@ public class User {
 
 	public void setFname(String fname) {
 		this.fname = fname;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }
