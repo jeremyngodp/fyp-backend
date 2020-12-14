@@ -1,12 +1,17 @@
 package com.example.demo.controller;
 
 import com.example.demo.assemblers.ProjectModelAssembler;
+import com.example.demo.dto.ProjectDTO;
+import com.example.demo.jwt.UserService;
 import com.example.demo.persistences.Project;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.services.ProjectService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,12 +27,14 @@ public class ProjectController {
 
     private final ProjectService projectService;
     private final ProjectModelAssembler projectAssembler;
+    private final UserService userService;
 
     @Autowired
-    public ProjectController(ProjectService projectService, ProjectModelAssembler projectModelAssembler) {
+    public ProjectController(ProjectService projectService, ProjectModelAssembler projectModelAssembler, UserService userService) {
         super();
         this.projectService = projectService;
         this.projectAssembler = projectModelAssembler;
+        this.userService = userService;
     }
 
     @GetMapping (path = "/bysup/{sup_id}")
@@ -58,5 +65,20 @@ public class ProjectController {
     @GetMapping (path = "/{id}")
     public EntityModel<Project> findByID(@PathVariable("id") int id){
         return projectAssembler.toModel(projectService.findById(id));
+    }
+
+    @PostMapping(path = "/add", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<EntityModel<Project>> addProject(@RequestBody ProjectDTO projectDTO) {
+        Project newProject =  new Project();
+        newProject.setSupervisor(userService.findUserByID(projectDTO.getSupervisor_id()));
+        newProject.setStudent_id(projectDTO.getStudent_id());
+        newProject.setName(projectDTO.getName());
+        newProject.setDescription((projectDTO.getDescription()));
+
+        Project addedProject = projectService.addProject(newProject);
+        EntityModel<Project> entityModel = projectAssembler.toModel(addedProject);
+        return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
+
     }
 }

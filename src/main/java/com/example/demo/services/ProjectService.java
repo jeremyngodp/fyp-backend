@@ -90,9 +90,15 @@ public class ProjectService {
 
     private Project addStudentEntity(Project project) {
         int student_id = project.getStudent_id();
-        User student = userRepository.findById(student_id);
-        project.setStudent(student);
+        if (student_id> 0) {
+            User student = userRepository.findById(student_id);
+            project.setStudent(student);
+        }
 
         return project;
+    }
+
+    public Project addProject (Project project) {
+        return projectRepository.save(project);
     }
 }
