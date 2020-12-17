@@ -67,6 +67,20 @@ public class ProjectController {
         return projectAssembler.toModel(projectService.findById(id));
     }
 
+    @PutMapping (path = "/{id}", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<?> editByID(@RequestBody ProjectDTO projectDTO, @PathVariable int id){
+        Project project =  projectService.findById(id);
+        project.setStudent_id(projectDTO.getStudent_id());
+        project.setStudent(userService.findUserByID(projectDTO.getStudent_id()));
+        project.setSupervisor(userService.findUserByID(projectDTO.getSupervisor_id()));
+        project.setDescription(projectDTO.getDescription());
+        project.setName(projectDTO.getName());
+        EntityModel<Project> projectEntityModel =  projectAssembler.toModel(projectService.addProject(project));
+        return ResponseEntity
+                .created(projectEntityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(projectEntityModel);
+    }
+
     @PostMapping(path = "/add", consumes = "application/json", produces = "application/json")
     public ResponseEntity<EntityModel<Project>> addProject(@RequestBody ProjectDTO projectDTO) {
         Project newProject =  new Project();
