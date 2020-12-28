@@ -56,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.cors().and().csrf().disable()
                 // do not authenticate this particular request
                 .authorizeRequests()
-                .antMatchers("/fyp/api/user/authenticate", "/fyp/api/user/add", "/fyp/api/user/all").permitAll()
+                .antMatchers("/fyp/api/user/authenticate", "/fyp/api/user/add", "/fyp/api/user/all", "/fyp/api/downloadFile").permitAll()
                 //.antMatchers("/fyp/api/project").access() -> to add authorisation.
                 // all other requests need to be authenticated
                         .anyRequest().authenticated().and()
