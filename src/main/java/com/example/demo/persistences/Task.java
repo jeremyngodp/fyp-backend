@@ -39,12 +39,14 @@ public class Task {
 	@Column(name="task_type")
 	private String task_type;
 
-	@JsonIgnore
-	@Transient
-	private List<CommentDTO> commentsDTO;
-
 	@OneToMany(mappedBy = "task")
 	private List<Comment> comments;
+
+	@Column(name="hour")
+	private int hourSpent;
+
+	@Column(name="status")
+	private String status;
 
 	public Task(){}
 
@@ -129,11 +131,19 @@ public class Task {
 		this.comments = comments;
 	}
 
-	public List<CommentDTO> getCommentsDTO() {
-		return commentsDTO;
+	public int getHourSpent() {
+		return hourSpent;
 	}
 
-	public void setCommentsDTO(List<CommentDTO> commentsDTO) {
-		this.commentsDTO = commentsDTO;
+	public void setHourSpent(int hourSpent) {
+		this.hourSpent = hourSpent;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

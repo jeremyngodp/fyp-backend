@@ -52,11 +52,24 @@ public class TaskController {
                                          .withSelfRel());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(path = "/{id}")
     public EntityModel<Task> findTaskByID(@PathVariable("id") int id) {
         Task task = taskService.findTaskByID(id);
 
         return taskAssembler.toModel(task);
+    }
+
+    @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<?> editById(@RequestBody Task reqTask, @PathVariable int id) {
+        Task task = taskService.findTaskByID(id);
+//        task.setDeadline(reqTask.getDeadline());
+//        task.setTitle(reqTask.getTitle());
+        task.setStatus(reqTask.getStatus());
+        task.setHourSpent(reqTask.getHourSpent());
+        EntityModel<Task> taskEntityModel = taskAssembler.toModel(taskService.addTask(task));
+        return ResponseEntity
+                .created(taskEntityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(taskEntityModel);
     }
 
     //This endpoint is for StaffPage.jsx to look for all tasks belong to a particular project.
