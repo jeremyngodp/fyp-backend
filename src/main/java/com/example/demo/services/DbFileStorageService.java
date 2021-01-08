@@ -29,4 +29,8 @@ public class DbFileStorageService {
     public DbFile getFile(String fileId) {
         return dbFileRepository.findById(fileId).orElse(null);
     }
+
+    public DbFile getFileByTask(int task_id) {
+        return dbFileRepository.findByTaskId(task_id);
+    }
 }

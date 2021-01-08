@@ -49,4 +49,14 @@ public class DbFileController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getFileName() + "\"")
                 .body(new ByteArrayResource(dbFile.getData()));
     }
+
+    @GetMapping("/downloadFile/task/{task_id}")
+    public ResponseEntity<Resource> downLoadFileByTaskId(@PathVariable int task_id) {
+        DbFile dbFile = dbFileStorageService.getFileByTask(task_id);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(dbFile.getFileType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getFileName() + "\"")
+                .body(new ByteArrayResource(dbFile.getData()));
+    }
 }
