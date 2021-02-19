@@ -31,6 +31,10 @@ public class DbFileStorageService {
     }
 
     public DbFile getFileByTask(int task_id) {
-        return dbFileRepository.findByTaskId(task_id);
+        return dbFileRepository.findByTaskId(task_id).orElse(null);
+    }
+
+    public Integer getFileCountbyTask(int task_id) {
+        return dbFileRepository.countFilebyTask(task_id);
     }
 }

@@ -59,4 +59,11 @@ public class DbFileController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getFileName() + "\"")
                 .body(new ByteArrayResource(dbFile.getData()));
     }
+
+    @GetMapping("checkFileAttachedCount/task/{task_id}")
+    public ResponseEntity<Integer> checkFileAttachedCount (@PathVariable int task_id) {
+        Integer result = dbFileStorageService.getFileCountbyTask(task_id);
+
+        return ResponseEntity.ok().body(result);
+    }
 }
