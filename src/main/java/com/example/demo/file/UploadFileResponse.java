@@ -1,16 +1,41 @@
 package com.example.demo.file;
 
+import java.sql.Date;
+
 public class UploadFileResponse {
+    private String id;
     private String fileName;
     private String fileDownloadUri;
     private String fileType;
+    private int task_id;
+    private Date uploadDate;
     private long size;
 
-    public UploadFileResponse(String fileName, String fileDownloadUri, String fileType, long size) {
-        this.fileName = fileName;
-        this.fileDownloadUri = fileDownloadUri;
-        this.fileType = fileType;
-        this.size = size;
+    public UploadFileResponse() {
+
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    public int getTask_id() {
+        return task_id;
+    }
+
+    public void setTask_id(int task_id) {
+        this.task_id = task_id;
+    }
+
+    public Date getUploadDate() {
+        return uploadDate;
+    }
+
+    public void setUploadDate(Date uploadDate) {
+        this.uploadDate = uploadDate;
     }
 
     public String getFileName() {

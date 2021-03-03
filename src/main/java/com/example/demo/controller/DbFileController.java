@@ -34,9 +34,13 @@ public class DbFileController {
                 .path("/fyp/api/downloadFile/")
                 .path(dbFile.getId())
                 .toUriString();
-
-        return new UploadFileResponse(dbFile.getFileName(), fileDownloadUri,
-                file.getContentType(), file.getSize());
+        UploadFileResponse response = new UploadFileResponse();
+        response.setId(dbFile.getId());
+        response.setFileName(dbFile.getFileName());
+        response.setFileType(dbFile.getFileType());
+        response.setTask_id(dbFile.getTask_id());
+        response.setUploadDate(dbFile.getUploadDate());
+        return response;
     }
 
     @GetMapping("/downloadFile/{fileId}")

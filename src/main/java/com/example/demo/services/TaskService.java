@@ -1,9 +1,12 @@
 package com.example.demo.services;
 
 
+import com.example.demo.dto.DbFileDTO;
 import com.example.demo.persistences.Comment;
+import com.example.demo.persistences.DbFile;
 import com.example.demo.persistences.Task;
 import com.example.demo.repository.CommentRepository;
+import com.example.demo.repository.DbFileRepository;
 import com.example.demo.repository.TaskRepository;
 import com.example.demo.repository.UserRepository;
 
@@ -21,13 +24,16 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final CommentRepository commentRepository;
-    private  final UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final DbFileRepository dbFileRepository;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository, CommentRepository commentRepository, UserRepository userRepository) {
+    public TaskService(TaskRepository taskRepository, CommentRepository commentRepository,
+                       UserRepository userRepository, DbFileRepository dbFileRepository) {
         this.taskRepository = taskRepository;
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
+        this.dbFileRepository = dbFileRepository;
     }
 
     // This method add comment list to the task before sending it back to the caller. For each of the comment,
@@ -47,6 +53,22 @@ public class TaskService {
         return task;
     }
 
+    private Task addAttachedFileToTask (Task task) {
+        DbFile file = dbFileRepository.findByTaskId(task.getId()).orElse(null);
+
+        if (file != null) {
+            DbFileDTO fileDTO = new DbFileDTO();
+            fileDTO.setId(file.getId());
+            fileDTO.setFileName(file.getFileName());
+            fileDTO.setFileType(file.getFileType());
+            fileDTO.setTask_id(file.getTask_id());
+            fileDTO.setUploadDate(file.getUploadDate());
+            task.setAttachedFile(fileDTO);
+        }
+
+        return task;
+    }
+
     public List<Task> findTaskByStudentID (int id) throws EntityNotFoundException {
 
         List<Task> taskList =  taskRepository.findbystudentID(id);
@@ -55,6 +77,7 @@ public class TaskService {
                     .map(task -> {
                         task.setProject_id(id);
                         task = this.addCommentToTask(task);
+                        task = this.addAttachedFileToTask(task);
                         return task;
                     })
                     .collect(Collectors.toList());
@@ -62,8 +85,8 @@ public class TaskService {
     }
 
     public Task findTaskByID(int id) {
-        return addCommentToTask(taskRepository.findById(id)
-                                                     .orElse(null));
+        Task task = taskRepository.findById(id).orElse(null);
+        return addAttachedFileToTask(addCommentToTask(task));
     }
 
     public List<Task> findTaskByProjectID(int id) {
@@ -72,6 +95,7 @@ public class TaskService {
                                     .map(task -> {
                                         task.setProject_id(id);
                                         task = this.addCommentToTask(task);
+                                        task = this.addAttachedFileToTask(task);
                                         return task;
                                     })
                                     .collect(Collectors.toList());

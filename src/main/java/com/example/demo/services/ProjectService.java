@@ -1,8 +1,11 @@
 package com.example.demo.services;
 
+import com.example.demo.dto.DbFileDTO;
+import com.example.demo.persistences.DbFile;
 import com.example.demo.persistences.Project;
 import com.example.demo.persistences.Task;
 import com.example.demo.persistences.User;
+import com.example.demo.repository.DbFileRepository;
 import com.example.demo.repository.ProjectRepository;
 import com.example.demo.repository.TaskRepository;
 import com.example.demo.repository.UserRepository;
@@ -17,12 +20,27 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
+    private final DbFileRepository dbFileRepository;
 
     @Autowired
-    public ProjectService (ProjectRepository projectRepository, TaskRepository taskRepository, UserRepository userRepository) {
+    public ProjectService (ProjectRepository projectRepository, TaskRepository taskRepository,
+                           UserRepository userRepository, DbFileRepository dbFileRepository) {
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
+        this.dbFileRepository = dbFileRepository;
+    }
+
+    public List<Project> findAll() {
+        List<Project> result =  this.projectRepository.findAll()
+                .stream()
+                .map(project -> {
+                    project = this.addTaskList(project);
+                    project = this.addStudentEntity(project);
+                    return project;
+                })
+                .collect(Collectors.toList());
+        return result;
     }
 
     public List<Project> findBySupervisorID (int id) {
@@ -76,6 +94,18 @@ public class ProjectService {
                                                                             return comment;
                                                                         })
                                                         .collect(Collectors.toList());
+
+                                                    DbFile file = dbFileRepository.findByTaskId(task.getId()).orElse(null);
+
+                                                    if (file != null) {
+                                                        DbFileDTO fileDTO = new DbFileDTO();
+                                                        fileDTO.setTask_id(file.getTask_id());
+                                                        fileDTO.setFileType(file.getFileType());
+                                                        fileDTO.setFileName(file.getFileName());
+                                                        fileDTO.setId(file.getId());
+                                                        fileDTO.setUploadDate(file.getUploadDate());
+                                                        task.setAttachedFile(fileDTO);
+                                                    }
 
                                                     task.setProject_id(project_id);
 

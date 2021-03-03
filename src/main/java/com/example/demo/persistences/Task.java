@@ -1,6 +1,7 @@
 package com.example.demo.persistences;
 
 import com.example.demo.dto.CommentDTO;
+import com.example.demo.dto.DbFileDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -23,6 +24,9 @@ public class Task {
 
 	@Transient
 	private int project_id;
+
+	@Transient
+	private DbFileDTO attachedFile;
 
 	@Column(name="student_id")
 	private int student_id;
@@ -145,5 +149,13 @@ public class Task {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public DbFileDTO getAttachedFile() {
+		return attachedFile;
+	}
+
+	public void setAttachedFile(DbFileDTO attachedFile) {
+		this.attachedFile = attachedFile;
 	}
 }
