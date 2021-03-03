@@ -32,6 +32,9 @@ public class User {
 	@Column(name="is_staff")
 	private boolean is_staff;
 
+	@Column(name="is_admin")
+	private boolean is_admin;
+
 	public User() {}
 
 	public User (String fname, String lname, String email, boolean is_staff){
@@ -97,4 +100,11 @@ public class User {
 		this.password = password;
 	}
 
+	public boolean isIs_admin() {
+		return is_admin;
+	}
+
+	public void setIs_admin(boolean is_admin) {
+		this.is_admin = is_admin;
+	}
 }

@@ -18,6 +18,8 @@ public class ProjectModelAssembler implements RepresentationModelAssembler<Proje
                                                 .findByID(project.getId()))
                                                 .withSelfRel(),
                                         linkTo(methodOn(ProjectController.class)
+                                                .findAll()).withRel("all"),
+                                        linkTo(methodOn(ProjectController.class)
                                                 .findByStudentID(project.getStudent_id()))
                                                 .withRel("byStudentID"),
                                         linkTo(methodOn(ProjectController.class)

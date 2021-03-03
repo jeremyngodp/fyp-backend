@@ -37,6 +37,19 @@ public class ProjectController {
         this.userService = userService;
     }
 
+    @GetMapping (path = "/all")
+    public CollectionModel<EntityModel<Project>> findAll(){
+        List<EntityModel<Project>> projectList =  projectService.findAll()
+                .stream()
+                .map(projectAssembler::toModel)
+                .collect(Collectors.toList());
+
+        return CollectionModel.of(projectList, linkTo(methodOn(ProjectController.class)
+                .findAll())
+                .withSelfRel());
+
+    }
+
     @GetMapping (path = "/bysup/{sup_id}")
     public CollectionModel<EntityModel<Project>> findAllBySupervisorID(@PathVariable("sup_id") int sup_id){
         List<EntityModel<Project>> projectList =  projectService.findBySupervisorID(sup_id)
