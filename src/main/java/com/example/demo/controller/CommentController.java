@@ -57,21 +57,6 @@ public class CommentController {
                                           .withSelfRel());
     }
 
-
-
-    // This method use the persistence itself to send and receive data
-    @PostMapping(value = "/add/{task_id}")
-    public ResponseEntity<EntityModel<Comment>> addComment (@PathVariable("task_id") int task_id,
-                                                            @RequestBody Comment newComment) {
-
-        Task task = this.taskService.findTaskByID(task_id);
-        newComment.setTask(task);
-        EntityModel<Comment> entityModel = commentAssembler.toModel(commentService.addCommentReturnPersistence(newComment));
-
-        return ResponseEntity.created(entityModel.getRequiredLink("byTaskID").toUri())
-                .body(entityModel);
-    }
-
     // This method use a DTO to send and receive data
     @PostMapping(value = "/addByDto")
     public ResponseEntity<EntityModel<CommentDTO>> addCommentByDTO ( @RequestBody CommentDTO newCommentdto) {

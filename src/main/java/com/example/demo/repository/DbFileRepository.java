@@ -16,6 +16,7 @@ public interface DbFileRepository  extends JpaRepository<DbFile, String> {
 //    @Query(value = "SELECT * FROM files WHERE task_id = ?1", nativeQuery = true)
 //    List<DbFile> findByTaskId(int task_id);
 
+    //delete
     @Query(value= "SELECT COUNT(id) FROM files WHERE task_id = ?1", nativeQuery = true)
     Integer countFilebyTask(int task_id);
 }

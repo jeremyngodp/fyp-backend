@@ -4,7 +4,6 @@ import com.example.demo.assemblers.ProjectModelAssembler;
 import com.example.demo.dto.ProjectDTO;
 import com.example.demo.jwt.UserService;
 import com.example.demo.persistences.Project;
-import com.example.demo.repository.UserRepository;
 import com.example.demo.services.ProjectService;
 
 import org.springframework.beans.factory.annotation.Autowired;
