@@ -90,7 +90,20 @@ public class TaskController {
                 .withSelfRel());
     }
 
-//    This allow new task to be added through content-type = 'application/x-form-www-urlencoded"
+
+    // This allow new task to be added via POST request with JSON body data.
+    @PostMapping(value = "/add", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<EntityModel<Task>> addTask (@RequestBody Task requestBodyTask)  {
+        Project project = projectService.findById(requestBodyTask.getProject_id());
+        requestBodyTask.setProject(project);
+        EntityModel<Task> entityModel = taskAssembler.toModel(taskService.addTask(requestBodyTask));
+
+        return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
+                .toUri())
+                .body(entityModel);
+    }
+
+    //    This allow new task to be added through content-type = 'application/x-form-www-urlencoded"
 //    @PostMapping("/add")
 //    public ResponseEntity<?> addTask (@RequestParam int student_id,
 //                                      @RequestParam int project_id,
@@ -107,17 +120,5 @@ public class TaskController {
 //                .toUri())
 //                .body(entityModel);
 //    }
-
-    // This allow new task to be added via POST request with JSON body data.
-    @PostMapping(value = "/add", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<EntityModel<Task>> addTask (@RequestBody Task requestBodyTask)  {
-        Project project = projectService.findById(requestBodyTask.getProject_id());
-        requestBodyTask.setProject(project);
-        EntityModel<Task> entityModel = taskAssembler.toModel(taskService.addTask(requestBodyTask));
-
-        return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
-                .toUri())
-                .body(entityModel);
-    }
 
 }
