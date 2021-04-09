@@ -89,7 +89,7 @@ public class CommentController {
     }
 
     //This method will assign incoming data into a Comment entity directly
-    @PostMapping(value = "/addByComment")
+    @PostMapping(value = "/add")
     public ResponseEntity<EntityModel<Comment>> addComment ( @RequestBody Comment newComment) {
 
         Task task = this.taskService.findTaskByID((newComment.getTask_id()));
