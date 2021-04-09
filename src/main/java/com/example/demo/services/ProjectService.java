@@ -131,4 +131,8 @@ public class ProjectService {
     public Project addProject (Project project) {
         return projectRepository.save(project);
     }
+
+    public void remove(Project project){
+        projectRepository.delete(project);
+    }
 }

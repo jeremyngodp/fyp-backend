@@ -105,6 +105,12 @@ public class ProjectController {
         EntityModel<Project> entityModel = projectAssembler.toModel(addedProject);
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
+    }
 
+    @DeleteMapping (path="/delete/{id}")
+    public ResponseEntity<?> removeProject (@PathVariable int id) {
+        Project project = projectService.findById((id));
+        projectService.remove(project);
+        return ResponseEntity.ok("project removed");
     }
 }
