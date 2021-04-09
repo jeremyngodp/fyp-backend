@@ -1,6 +1,8 @@
 package com.example.demo.jwt;
 
 
+import com.example.demo.persistences.Project;
+import com.example.demo.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +22,9 @@ public class UserService implements UserDetailsService {
 	private UserRepository userRepository;
 
 	@Autowired
+	private ProjectRepository projectRepository;
+
+	@Autowired
 	private PasswordEncoder bcryptEncoder;
 
 	@Override
@@ -32,6 +37,30 @@ public class UserService implements UserDetailsService {
 		return new org.springframework.security.core.userdetails.User(user.getUsername(),
 																	  user.getPassword(),
 																	  new ArrayList<>());
+	}
+
+	public void resetPassword(String username) {
+		User user = userRepository.findByUsername(username);
+		user.setPassword((bcryptEncoder.encode("NtuIsGreat")));
+		userRepository.save(user);
+	}
+
+	public void remove(String username) {
+		User user = userRepository.findByUsername(username);
+		userRepository.delete(user);
+//		List<Project> projects = projectRepository.findByStudentIDEqual(user.getId());
+//		projects.stream().map(project -> {
+//			project.setStudent_id(0);
+//			project.setStudent(null);
+//			return projectRepository.save(project);
+//		});
+	}
+
+	public void changePassword(String username, String password) {
+		User user = userRepository.findByUsername(username);
+		user.setPassword((bcryptEncoder.encode(password)));
+		System.out.println(password);
+		userRepository.save(user);
 	}
 
 	public User addUser(User user) {
